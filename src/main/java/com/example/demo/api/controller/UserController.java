@@ -1,12 +1,10 @@
 package com.example.demo.api.controller;
 
-import com.example.demo.api.model.User;
+import com.example.demo.api.ApiResponse;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 
 @RestController
@@ -19,19 +17,19 @@ public class UserController {
     }
 
     @PostMapping("/user/register")
-    public String save(@ModelAttribute UserDTO userDTO){
+    public ApiResponse<String> save(@ModelAttribute UserDTO userDTO){
         System.out.println("userDTO = " + userDTO);
         userService.addUser(userDTO);
-        return "userDTO =" + userDTO;
+        return ApiResponse.createSuccess("userDTO =" + userDTO);
     }
 
     @PostMapping("/user/login")
-    public String login(@ModelAttribute UserDTO userDTO){
+    public ApiResponse<String> login(@ModelAttribute UserDTO userDTO){
         UserDTO loginResult = userService.login(userDTO);
         if (loginResult != null){
-            return "Success";
+            return ApiResponse.createSuccess("Success: " + loginResult.getUsername());
         }else{
-            return "Failed";
+            return ApiResponse.createSuccess("Failed: " + userDTO.getEmail());
         }
     }
 }

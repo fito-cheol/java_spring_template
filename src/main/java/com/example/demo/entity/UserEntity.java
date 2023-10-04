@@ -2,11 +2,15 @@ package com.example.demo.entity;
 
 import com.example.demo.dto.UserDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name="users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -22,13 +26,6 @@ public class UserEntity {
 
     @Column(name="password")
     private String password;
-
-    public UserEntity(Long id, String username, String email, String password) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 
     public static UserEntity toUserEntity(UserDTO userDTO){
         return  new UserEntity(null, userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
