@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.StadiumDTO;
+import com.example.demo.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +23,8 @@ public class Stadium {
     private String nickName;
     @Column(length=200)
     private String address;
+
+    public static Stadium toStadium(StadiumDTO stadiumDTO){
+        return new Stadium(stadiumDTO.getId(), stadiumDTO.getName(), stadiumDTO.getNickName(), stadiumDTO.getAddress());
+    }
 }
