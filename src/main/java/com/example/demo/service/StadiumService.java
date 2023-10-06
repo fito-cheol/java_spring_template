@@ -38,4 +38,7 @@ public class StadiumService {
         Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
         byId.ifPresent(stadium -> stadium.setNickName(nickname));
     }
+    public void delete(Long stadiumId){
+        stadiumRepository.deleteById(stadiumId);
+    }
 }

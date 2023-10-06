@@ -58,4 +58,14 @@ class StadiumServiceTest {
         }
         assertEquals(byId.get().getNickName(), newNick);
     }
+
+    @Test
+    void delete() {
+        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장", "풋살장1", "515 Seongsan-dong, Mapo-gu, Seoul");
+        Long stadiumId = stadiumService.add(stadiumDTO);
+
+        stadiumService.delete(stadiumId);
+        Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
+        assert(byId.isEmpty());
+    }
 }
