@@ -34,4 +34,8 @@ public class StadiumService {
         Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
         return byId.map(StadiumDTO::toStadiumDTO).orElse(null);
     }
+    public void updateNickname(Long stadiumId, String nickname){
+        Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
+        byId.ifPresent(stadium -> stadium.setNickName(nickname));
+    }
 }

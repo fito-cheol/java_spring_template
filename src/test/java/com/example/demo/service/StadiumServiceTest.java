@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -42,6 +42,20 @@ class StadiumServiceTest {
         StadiumDTO stadiumDTO = new StadiumDTO(null, name, nickname, address);
         Long stadiumId = stadiumService.add(stadiumDTO);
         StadiumDTO oneStadium = stadiumService.findOne(stadiumId);
-        assert(oneStadium.getName().equals(stadiumDTO.getName()));
+        assertEquals(oneStadium.getName(), stadiumDTO.getName());
+    }
+
+    @Test
+    void updateNickname() {
+        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장", "풋살장1", "515 Seongsan-dong, Mapo-gu, Seoul");
+        Long stadiumId = stadiumService.add(stadiumDTO);
+        String newNick = "새로운 닉네임";
+        stadiumService.updateNickname(stadiumId, newNick);
+
+        Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
+        if (byId.isEmpty()){
+            fail("해당하는 Stadium을 찾지 못했습니다");
+        }
+        assertEquals(byId.get().getNickName(), newNick);
     }
 }
