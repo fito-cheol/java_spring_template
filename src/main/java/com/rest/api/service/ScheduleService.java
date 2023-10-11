@@ -1,6 +1,7 @@
 package com.rest.api.service;
 
 import com.rest.api.dto.ScheduleDTO;
+import com.rest.api.dto.StadiumDTO;
 import com.rest.api.entity.Schedule;
 import com.rest.api.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,17 @@ public class ScheduleService {
         return scheduleDTOs;
     }
 
-    public ScheduleDTO findOne(Long scheduleId){
+    public ScheduleDTO findSchedule(Long scheduleId){
         Optional<Schedule> byId = scheduleRepository.findById(scheduleId);
         return byId.map(ScheduleDTO::toScheduleDTO).orElse(null);
+    }
+
+    public StadiumDTO findStadium(Long scheduleId){
+        Optional<Schedule> byId = scheduleRepository.findById(scheduleId);
+        if (byId.isEmpty()){
+            return null;
+        }
+        return StadiumDTO.toStadiumDTO(byId.get().getStadium());
     }
 
     public void delete(Long scheduleId){

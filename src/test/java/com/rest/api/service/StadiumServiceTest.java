@@ -35,9 +35,9 @@ class StadiumServiceTest {
     }
     @Test
     void add(){
-        String name = "상암 월드컵 경기장";
-        String nickname ="풋살장1";
-        String address = "515 Seongsan-dong, Mapo-gu, Seoul";
+        String name = "상암 월드컵 경기장3";
+        String nickname ="풋살장3";
+        String address = "517 Seongsan-dong, Mapo-gu, Seoul";
 
         StadiumDTO stadiumDTO = new StadiumDTO(null, name, nickname, address);
         Long stadiumId = stadiumService.add(stadiumDTO);
@@ -50,7 +50,7 @@ class StadiumServiceTest {
 
     @Test
     void updateNickname() {
-        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장", "풋살장1", "515 Seongsan-dong, Mapo-gu, Seoul");
+        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장4", "풋살장4", "518 Seongsan-dong, Mapo-gu, Seoul");
         Long stadiumId = stadiumService.add(stadiumDTO);
         String newNick = "새로운 닉네임";
         stadiumService.updateNickname(stadiumId, newNick);
@@ -64,7 +64,7 @@ class StadiumServiceTest {
 
     @Test
     void delete() {
-        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장", "풋살장1", "515 Seongsan-dong, Mapo-gu, Seoul");
+        StadiumDTO stadiumDTO = new StadiumDTO(null, "상암 월드컵 경기장5", "풋살장5", "520 Seongsan-dong, Mapo-gu, Seoul");
         Long stadiumId = stadiumService.add(stadiumDTO);
 
         stadiumService.delete(stadiumId);

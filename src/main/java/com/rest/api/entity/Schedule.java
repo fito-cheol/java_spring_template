@@ -8,10 +8,8 @@ import java.time.LocalTime;
 
 import com.rest.api.dto.ScheduleDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity(name="schedule")
 @Getter @Setter
@@ -26,7 +24,8 @@ public class Schedule implements Serializable {
     @Column(nullable=false)
     private LocalDate date;
     @Column(nullable=false)
-    private int type;
+    @ColumnDefault("1")
+    private int type; // enum T : 훈련 P : 자체 경기(연습경기) L : 리그 경기 M : 친선경기(match) C : 대회
     @Column(name="start_time")
     private LocalTime startTime;
     @Column(name="end_time")
@@ -37,6 +36,8 @@ public class Schedule implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY) // EAGER
     @JoinColumn(name="stadium_id")
     private Stadium stadium;
+
+
 
     public static Schedule toSchedule(ScheduleDTO scheduleDTO){
         Schedule schedule = new Schedule();

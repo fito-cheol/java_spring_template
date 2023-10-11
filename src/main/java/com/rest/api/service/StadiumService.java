@@ -34,7 +34,7 @@ public class StadiumService {
     }
     private Boolean checkDuplicate(StadiumDTO stadiumDTO){
         Optional<Stadium> byAddress = stadiumRepository.findByAddress(stadiumDTO.getAddress());
-        return byAddress.isEmpty();
+        return byAddress.isPresent();
     }
     public StadiumDTO findOne(Long stadiumId){
         Optional<Stadium> byId = stadiumRepository.findById(stadiumId);
