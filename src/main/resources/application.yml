@@ -1,0 +1,4 @@
+jwt:
+  header: Authorization
+  secret: token.secret.any.words
+  access-token-validity-in-seconds: 600 # 10 min

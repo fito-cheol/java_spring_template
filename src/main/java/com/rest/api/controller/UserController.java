@@ -25,11 +25,11 @@ public class UserController {
 
     @PostMapping("/user/login")
     public ApiResponse<String> login(@ModelAttribute UserDTO userDTO){
-        UserDTO loginResult = userService.login(userDTO);
-        if (loginResult != null){
-            return ApiResponse.createSuccess("Success: " + loginResult.getUsername());
+        String jwt = userService.login(userDTO);
+        if (jwt != null){
+            return ApiResponse.createSuccess("Success with jwt: " + jwt);
         }else{
-            return ApiResponse.createSuccess("Failed: " + userDTO.getEmail());
+            return ApiResponse.createSuccess("Failed with email: " + userDTO.getEmail());
         }
     }
 }
