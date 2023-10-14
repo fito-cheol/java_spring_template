@@ -1,6 +1,6 @@
-package com.rest.api.api.controller;
+package com.rest.api.controller;
 
-import com.rest.api.api.ApiResponse;
+import com.rest.api.util.ApiResponse;
 import com.rest.api.dto.UserDTO;
 import com.rest.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

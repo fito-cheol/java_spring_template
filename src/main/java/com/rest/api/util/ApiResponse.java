@@ -1,4 +1,4 @@
-package com.rest.api.api;
+package com.rest.api.util;
 
 
 import lombok.AccessLevel;

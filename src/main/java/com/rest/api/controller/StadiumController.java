@@ -1,6 +1,6 @@
-package com.rest.api.api.controller;
+package com.rest.api.controller;
 
-import com.rest.api.api.ApiResponse;
+import com.rest.api.util.ApiResponse;
 import com.rest.api.dto.StadiumDTO;
 import com.rest.api.service.StadiumService;
 import lombok.RequiredArgsConstructor;
