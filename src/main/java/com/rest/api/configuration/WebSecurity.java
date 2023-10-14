@@ -1,66 +1,66 @@
 package com.rest.api.configuration;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.rest.api.service.UserService;
+import com.rest.api.util.JwtUtil;
+import jakarta.servlet.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // https://www.toptal.com/spring/spring-security-tutorial
 // Enable CORS and disable CSRF.
-// Set session management to stateless.
-// Set unauthorized requests exception handler.
+// Set session management to stateless. Ref: https://russwest.tistory.com/40
+// Set unauthorized requests exception handler. <- 구현 안함 아래에서 포함되는듯
 // Set permissions on endpoints.
 // Add JWT token filter.
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
-    public static final String[] PUBLIC_PATHS = {"/api/auth/**",
-            "/v3/api-docs.yaml",
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html"};
+
+    private final JwtUtil jwtUtil;
+
+    private final UserService userService;
+
+    public static final String[] PUBLIC_PATHS = {"/error", "/user/login"};
+
+    @Autowired
+    public WebSecurity(JwtUtil jwtUtil, UserService userService) {
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // Enable CORS and disable CSRF.
-        http.httpBasic((basic)-> basic.disable())
+        http.httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .csrf((csrf) -> csrf.disable());
+                .csrf(AbstractHttpConfigurer::disable);
         // Set session management to stateless.
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        // Set unauthorized requests exception handler.
-        http.exceptionHandling((exceptionHandling) ->{
-            AuthenticationEntryPoint authenticationEntryPoint = ((request, response, authException) -> {response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());});
-            RequestMatcher requestMatcher = request -> {
-                return false;
-            };
 
-
-            ExceptionHandlingConfigurer<HttpSecurity> httpSecurityExceptionHandlingConfigurer = exceptionHandling.defaultAuthenticationEntryPointFor(authenticationEntryPoint, requestMatcher);
-        });
         // Set permissions on endpoints.
         http.authorizeHttpRequests(
                 (authorizeRequests) ->
-                        authorizeRequests.requestMatchers(HttpMethod.POST, "/user/register").authenticated()
-                                .requestMatchers("/user/login").permitAll()
-                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        authorizeRequests.requestMatchers(PUBLIC_PATHS).permitAll() // https://colabear754.tistory.com/182
                                 .anyRequest().authenticated()
         );
         // Add JWT token filter.
-//        http.addFilterBefore(
-//                jwtTokenFilter,
-//                UsernamePasswordAuthenticationFilter.class
-//        );
+        Filter authenticationTokenFilter = new JWTFilter(jwtUtil, userService);
+        http.addFilterBefore(
+                authenticationTokenFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }

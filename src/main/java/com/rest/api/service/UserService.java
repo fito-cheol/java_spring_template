@@ -3,7 +3,7 @@ package com.rest.api.service;
 import com.rest.api.dto.UserDTO;
 import com.rest.api.entity.UserEntity;
 import com.rest.api.repository.UserRepository;
-import com.rest.api.util.Jwt;
+import com.rest.api.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    private Long expiredMs = 1000 * 60 * 60l; // 1 hour = 1000 * 60 * 60l
+    private final JwtUtil jwtUtil;
 
     public String login(UserDTO userDTO){
 
@@ -30,7 +27,7 @@ public class UserService {
             if (userEntity.getPassword().equals(userDTO.getPassword())){
                 UserDTO userDTO1 = UserDTO.toUserDTO(userEntity);
 
-                return Jwt.create(userDTO1,secretKey,expiredMs);
+                return jwtUtil.create(userDTO1);
             }else {
                 return null;
             }
@@ -42,5 +39,14 @@ public class UserService {
     public void addUser(UserDTO userDTO) {
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
         userRepository.save(userEntity);
+    }
+    public UserDTO findUserByEmail(String email){
+        Optional<UserEntity> byEmail = userRepository.findByEmail(email);
+        if (byEmail.isPresent()) {
+            UserEntity userEntity = byEmail.get();
+            return UserDTO.toUserDTO(userEntity);
+        }else{
+            return null;
+        }
     }
 }
