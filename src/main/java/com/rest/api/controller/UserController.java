@@ -3,8 +3,11 @@ package com.rest.api.controller;
 import com.rest.api.util.ApiResponse;
 import com.rest.api.dto.UserDTO;
 import com.rest.api.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +28,14 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ApiResponse<String> login(@ModelAttribute UserDTO userDTO){
+    public ApiResponse<String> login(@RequestBody UserDTO userDTO){
         String jwt = userService.login(userDTO);
 
         if (jwt != null){
-            return ApiResponse.createSuccess("Success with jwt: " + jwt);
+            return ApiResponse.createSuccess(jwt);
         }else{
-            return ApiResponse.createSuccess("Failed with email: " + userDTO.getEmail());
+            String failMessage = "Failed with email: " + userDTO.getEmail();
+            return (ApiResponse<String>) ApiResponse.createError("토큰을 만들지 못했습니다");
         }
     }
 }

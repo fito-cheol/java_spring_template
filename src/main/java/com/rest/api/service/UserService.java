@@ -18,7 +18,7 @@ public class UserService {
 
     private final JwtUtil jwtUtil;
 
-    public String login(UserDTO userDTO){
+    public String login(UserDTO userDTO) throws RuntimeException{
 
         Optional<UserEntity> byEmail = userRepository.findByEmail(userDTO.getEmail());
         if (byEmail.isPresent()){
@@ -29,10 +29,10 @@ public class UserService {
 
                 return jwtUtil.create(userDTO1);
             }else {
-                return null;
+                throw new RuntimeException("해당하는 이메일이 존재하지 않습니다");
             }
         } else{
-            return null;
+            throw new RuntimeException("비밀번호가 일치하지 않습니다");
         }
     }
 
