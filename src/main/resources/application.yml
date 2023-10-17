@@ -1,0 +1,4 @@
+jwt:
+  header: Authorization
+  secret: token.secret.any.words
+  expiration: 3600000 # 10 min = 1000 * 60 * 10
