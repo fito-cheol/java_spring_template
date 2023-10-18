@@ -1,7 +1,7 @@
 package com.rest.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.api.util.ApiResponse;
+import com.rest.api.util.CustomApiResponse;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,8 +67,8 @@ class UserControllerTest {
                 .andReturn();
 
         String contentAsString  = mvcResult.getResponse().getContentAsString();
-        ApiResponse apiResponse = objectMapper.readValue(contentAsString, ApiResponse.class);
-        Object data = apiResponse.getData();
+        CustomApiResponse customApiResponse = objectMapper.readValue(contentAsString, CustomApiResponse.class);
+        Object data = customApiResponse.getData();
 
         String newUsername = "newUser";
         String newEmail = "newmail@email.co.kr";
