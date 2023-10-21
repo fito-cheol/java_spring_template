@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -29,5 +30,12 @@ public class UserEntity {
 
     public static UserEntity toUserEntity(UserDTO userDTO){
         return  new UserEntity(null, userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
+    }
+    public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(plainPassword, this.password);
+    }
+    public UserEntity HasPassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+        return this;
     }
 }

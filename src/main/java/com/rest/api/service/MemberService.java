@@ -40,3 +40,4 @@ public class MemberService {
         return byId.map(MemberDTO::toMemberDTO).orElse(null);
     }
 }
+

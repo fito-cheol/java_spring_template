@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,6 +33,7 @@ class UserControllerTest {
 
     final String email = "some@email.com";
     final String password = "p@ssw0rd2";
+
 
     @Test
     @DisplayName("로그인 성공")
@@ -86,4 +88,5 @@ class UserControllerTest {
                 )
                 .andExpect(status().isOk());
     }
+
 }
