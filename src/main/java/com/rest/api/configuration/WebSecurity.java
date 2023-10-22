@@ -30,7 +30,7 @@ public class WebSecurity {
     private final UserService userService;
     // https://www.youtube.com/watch?v=2o_3hjUPAfQ
     // springdoc.org/v2/
-    public static final String[] PUBLIC_PATHS = {"/error", "/user/login",
+    public static final String[] PUBLIC_PATHS = {"/error", "/api/user/login", 
             "/swagger-ui.html", "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**",
             "/configuration/ui", "/configuration/security", "/swagger-ui/**", "/webjars/**"};
 

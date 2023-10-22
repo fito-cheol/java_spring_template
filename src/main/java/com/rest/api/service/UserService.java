@@ -25,7 +25,7 @@ public class UserService {
 
         Optional<UserEntity> byEmail = userRepository.findByEmail(userDTO.getEmail());
         if (byEmail.isEmpty()){
-            throw new RuntimeException("비밀번호가 일치하지 않습니다");
+            throw new RuntimeException("해당하는 이메일이 존재하지 않습니다");
         }
         UserEntity userEntity = byEmail.get();
 
@@ -34,12 +34,16 @@ public class UserService {
 
             return jwtUtil.create(userDTO1);
         }else {
-            throw new RuntimeException("해당하는 이메일이 존재하지 않습니다");
+            throw new RuntimeException("비밀번호가 일치하지 않습니다");
         }
     }
 
-    public UserDTO addUser(UserDTO userDTO) {
+    public UserDTO addUser(UserDTO userDTO) throws RuntimeException {
         // TODO 이미 존재하는 회원 (이메일 중복)
+        UserDTO userFoundByEmail = findUserByEmail(userDTO.getEmail());
+        if (userFoundByEmail != null){
+            throw new RuntimeException("이메일이 이미 존재합니다");
+        }
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
         UserEntity hashedUserEntity = userEntity.HasPassword(encrypterConfig.encodePwd());
         return UserDTO.toUserDTO(userRepository.save(hashedUserEntity));
