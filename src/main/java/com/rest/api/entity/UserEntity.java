@@ -32,10 +32,10 @@ public class UserEntity {
         return  new UserEntity(null, userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
     }
     public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(plainPassword, this.password);
+        return passwordEncoder.matches(plainPassword, password);
     }
     public UserEntity HasPassword(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(this.password);
+        password = passwordEncoder.encode(password);
         return this;
     }
 }

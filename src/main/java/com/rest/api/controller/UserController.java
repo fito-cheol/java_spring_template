@@ -46,9 +46,10 @@ public class UserController {
         }
     }
     @PostMapping("/register")
-    public CustomApiResponse<String> save(@ModelAttribute UserDTO userDTO, Authentication authentication){
+    public CustomApiResponse<String> save(@RequestBody UserDTO userDTO, Authentication authentication){
         userService.addUser(userDTO);
-        return CustomApiResponse.createSuccess("userDTO =" + userDTO + "\n 유저 인증 이메일 정보:" + authentication.getName());
+
+        return CustomApiResponse.createSuccess("userDTO =" + userDTO + "\n 유저 인증 이메일 정보:");
     }
 
 
